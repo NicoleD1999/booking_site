@@ -19,7 +19,12 @@ const userSchema = new Schema({
         type: String,
         required: true,
         minlength: 6
-    }
+    },
+    booking: [{
+        required: true,
+        type: Schema.Types.ObjectId,
+        ref: "Booking"
+    }]
 })
 
 const User = model("User", userSchema)
