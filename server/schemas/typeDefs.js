@@ -51,7 +51,7 @@ type User{
 
 type Query {
     allUsers: [User]!
-    oneUser(_id: ID): User!
+    oneUser(userId: ID): User!
     property: [Property]!
     owner: [Owner]!
     expectations: [Expectations]!
@@ -59,13 +59,13 @@ type Query {
 }
 
 type Mutation {
-  updateProperty(description: String!): Property
-  updateOwner(description: String!): Owner
-  updateExpect(description: String!): Expectations
-  updateUser(first: String, last: String, email: String, password: String, booking: ID, notes: ID): User
-  updateAdmin(first: String!, last: String!, email: String!, password: String!, phone_number: Int): Admin
-  updateBooking(startDate: Date!, endDate: Date!, status: String!): Booking
-  updateNotes(body: String!): Notes
+  updateProperty(propId: ID, description: String!): Property
+  updateOwner(ownerId: ID, description: String!): Owner
+  updateExpect(expectId: ID, description: String!): Expectations
+  updateUser(userId: ID, first: String, last: String, email: String, password: String): User
+  updateAdmin(adminId: ID, first: String!, last: String!, email: String!, password: String!, phone_number: Int): Admin
+  updateBooking(bookingId: ID, startDate: Date!, endDate: Date!, status: String!): Booking
+  updateNotes(notesId: ID, body: String!): Notes
   createUser(first: String!, last: String!, email: String!, password: String!): User
   createBooking(userId: ID!, startDate: Date!, endDate: Date!): Booking
 }

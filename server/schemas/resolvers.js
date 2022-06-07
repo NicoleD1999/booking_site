@@ -10,7 +10,7 @@ const resolvers = {
         oneUser: async (parent, {userId}) => {
             return await User.findOne({
                 _id: userId
-            }).populate(["bookingId", "notesId"])
+            }).populate(["booking"])
         },
         property: async()=>{
             return Property.find({})
@@ -28,26 +28,54 @@ const resolvers = {
         },
     },
     Mutation: {
-        updateProperty: async(parent, args) =>{
-            return await Property.findOneAndUpdate(args)
+        updateProperty: async(parent, {propId, description}) =>{
+            return await Property.findOneAndUpdate(
+                {_id: propId},
+                {$set: {description: description}},
+                {new: true}
+            )
         },
-        updateOwner: async(parent, args)=> {
-            return await Owner.findOneAndUpdate(args)
+        updateOwner: async(parent, {ownerId, description})=> {
+            return await Owner.findOneAndUpdate(
+                {_id: ownerId},
+                {$set: {description: description}},
+                {new: true}
+            )
         },
-        updateExpect: async(parent, args)=> {
-            return await Expectations.findOneAndUpdate(args)
+        updateExpect: async(parent, {expectId, description})=> {
+            return await Expectations.findOneAndUpdate(
+                {_id: expectId},
+                {$set: {description: description}},
+                {new: true}
+            )
         },
-        updateUser: async(parent, args)=> {
-            return await User.findOneAndUpdate(args)
+        updateUser: async(parent, {userId, first, last, email, password})=> {
+            return await User.findOneAndUpdate(
+                {_id: userId},
+                {$set: {first: first, last: last, email: email, password: password}},
+                {new: true}
+            )
         },
-        updateAdmin: async(parent, args)=> {
-            return await Admin.findOneAndUpdate(args)
+        updateAdmin: async(parent, {adminId, first, last, email, password, phone_number})=> {
+            return await Admin.findOneAndUpdate(
+                {_id: adminId},
+                {$set: {first: first, last: last, email: email, password: password, phone_number: phone_number}},
+                {new: true}
+            )
         },
-        updateBooking: async(parent, args)=>{
-            return await Booking.findOneAndUpdate(args)
+        updateBooking: async(parent, {bookingId, startDate, endDate, status})=>{
+            return await Booking.findOneAndUpdate(
+                {_id: bookingId},
+                {$set: {startDate: startDate, endDate: endDate, status: status}},
+                {new: true}
+            )
         },
-        updateNotes: async(parent, args)=> {
-            return await Notes.findOneAndUpdate(args)
+        updateNotes: async(parent, {notesId, body})=> {
+            return await Notes.findOneAndUpdate(
+                {_id: notesId},
+                {$push: {body: body}},
+                {new: true}
+            )
         },
         createUser: async(parent, args)=>{
            return await User.create(args)
@@ -60,7 +88,7 @@ const resolvers = {
             })
             await User.findOneAndUpdate(
             {_id: userId},
-            {$push: {booking: newBooking._id}},
+            {$set: {booking: newBooking._id}},
             {new: true}
             )
             return newBooking

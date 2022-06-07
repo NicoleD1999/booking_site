@@ -22,5 +22,8 @@
   "homepage": "https://github.com/NicoleD1999/booking_site#readme",
   "devDependencies": {
     "concurrently": "^7.2.1"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.6.6"
   }
 }
