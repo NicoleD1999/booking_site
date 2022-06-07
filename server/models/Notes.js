@@ -2,7 +2,7 @@ const {Schema, model}= require("mongoose")
 
 const notesSchema= new Schema({
     body: {
-        type: Text,
+        type: String,
         required: true,
         maxlength: 60
     }

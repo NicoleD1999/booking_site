@@ -2,7 +2,7 @@ const {Schema, model}= require("mongoose")
 
 const ownerSchema = new Schema({
     description: {
-        type: Text,
+        type: String,
         required: true,
         maxlength: 1200
     }

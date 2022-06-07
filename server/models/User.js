@@ -20,11 +20,20 @@ const userSchema = new Schema({
         required: true,
         minlength: 6
     },
-    booking: [{
-        required: true,
+    booking: {
         type: Schema.Types.ObjectId,
         ref: "Booking"
+    },
+    notes: [{
+        type: Schema.Types.ObjectId,
+        ref: "Notes"
     }]
+},
+{
+    toJSON: {
+      virtuals: true,
+    },
+    id: false,
 })
 
 const User = model("User", userSchema)

@@ -1,9 +1,11 @@
 const {Admin, Booking, Expectations, Notes, Owner, Property, User} = require("../models")
+const { GraphQLScalarType } = require('graphql') ;
+const { Kind } = require('graphql/language');
 
 const resolvers = {
     Query: {
         allUsers: async () => {
-            return await User.find({}).populate(["bookingId", "notesId"])
+            return await User.find({}).populate(["booking"])
         },
         oneUser: async (parent, {userId}) => {
             return await User.findOne({
@@ -48,8 +50,40 @@ const resolvers = {
             return await Notes.findOneAndUpdate(args)
         },
         createUser: async(parent, args)=>{
-            return await User.create(args)
+           return await User.create(args)
+        },
+        createBooking: async(parent, {userId, startDate, endDate})=>{
+            const newBooking = await Booking.create(
+            {
+            startDate: startDate,
+            endDate: endDate
+            })
+            await User.findOneAndUpdate(
+            {_id: userId},
+            {$push: {booking: newBooking._id}},
+            {new: true}
+            )
+            return newBooking
         }
+        
 
-    }
-}
+    },
+    Date: new GraphQLScalarType({
+        name: 'Date',
+        description: 'Custom date scalar',
+        parseValue(value) {
+          return value;
+        },
+        serialize(value) {
+          return new Date(Number(value));
+        },
+        parseLiteral(ast) {
+          if (ast.kind === Kind.INT) {
+            return new Date(ast.value);
+          }
+          return null;
+        }
+      }),
+};
+
+module.exports = resolvers
