@@ -14,16 +14,21 @@ const [currentProperty, setProperty] = useState()
     const handleUpdate = async (value)=> {
        console.log(value)
        console.log(currentProperty)
+       console.error(error)
         await updateProperty({
             variables: {
-                propertyId: value,
+                propId: value,
                 description: currentProperty
             }
         })
+        setEditingId(-1)
     }
     const setDescription = (event) =>{
         setProperty(event.target.value)
-        console.log(currentProperty)
+        // console.log(currentProperty)
+    }
+    const handleIdChange= () =>{
+        setEditingId(-1)
     }
     if (editingId === property[0]._id) {
         return(
@@ -32,6 +37,7 @@ const [currentProperty, setProperty] = useState()
                 <div>
                     <td><input key={property._id} placeholder={property.description} onChange={setDescription}/></td>
                     <button key={property._id} onClick={(event)=>{handleUpdate(property._id)}}>Save</button>
+                    <button onClick={handleIdChange}>Cancel</button>
                 </div>      
                 )}
             </div>
@@ -42,7 +48,7 @@ const [currentProperty, setProperty] = useState()
             <div>
                 {property.map((property)=>
                 <div>
-                    <p>{property.description}</p>
+                    <p key={property.description}>{property.description}</p>
                     <button key={property._id} onClick={(event)=>{handleClick(property._id)}}>Edit</button>
                 </div>
                     )}
